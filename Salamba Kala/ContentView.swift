@@ -12,10 +12,8 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text(String(format: "%.1f", stopWatchManager.secondsElapsed))
-                .font(.custom("Avenir", size: 40))
-                .padding(.top, 200)
-                .padding(.bottom, 100)
+            Spacer()
+            TimerBar(secondsElapsed: stopWatchManager.secondsElapsed)
             if stopWatchManager.mode == .stopped {
                 Button(action: {self.stopWatchManager.start()}) {
                     TimerButton(label: "Start", buttonColor: .blue)
@@ -57,5 +55,26 @@ struct TimerButton: View {
             .padding(.horizontal, 90)
             .background(buttonColor)
             .cornerRadius(10)
+    }
+}
+
+struct TimerBar: View {
+    let secondsElapsed: Double
+    let screenSize: CGRect = UIScreen.main.bounds
+    
+    var body: some View {
+        ZStack(alignment: .leading) {
+            Rectangle()
+                .foregroundColor(.gray)
+                .frame(height: 80)
+            Rectangle()
+                .foregroundColor(.pink)
+                .frame(width: screenSize.width - ((secondsElapsed / 10) * screenSize.width), height: 80)
+                .animation(Animation.easeInOut(duration: 1))
+            Text(String(format: "%.1f", secondsElapsed))
+                .font(.custom("Avenir", size: 40))
+                .padding(.leading, 10)
+                .foregroundColor(.white)
+        }
     }
 }
